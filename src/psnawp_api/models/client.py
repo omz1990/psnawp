@@ -375,6 +375,9 @@ class Client:
         :returns: List of Titles with their play times
         :rtype: Iterator[TitleStats]
 
+            .. literalinclude:: examples/client/get_title_stats.json
+                :language: json
+
         .. code-block:: Python
 
             client = psnawp.me()
