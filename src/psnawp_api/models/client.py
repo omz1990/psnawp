@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any, Iterator, Optional, Literal
 
 from psnawp_api.models.group import Group
+from psnawp_api.models.title_stats import TitleStats
 from psnawp_api.models.trophies.trophy import Trophy, TrophyBuilder
 from psnawp_api.models.trophies.trophy_group import (
     TrophyGroupsSummary,
@@ -367,6 +368,20 @@ class Client:
                 request_builder=self._request_builder,
                 np_communication_id=np_communication_id,
             ).user_trophy_groups_summary_with_metadata(account_id="me", platform=platform)
+
+    def title_stats(self) -> Iterator[TitleStats]:
+        """Retrieve a list of title with their stats and basic meta-data
+
+        :returns: List of Titles with their play times
+        :rtype: Iterator[TitleStats]
+
+        .. code-block:: Python
+
+            client = psnawp.me()
+            print(client.title_stats())
+
+        """
+        return TitleStats.from_endpoint(request_builder=self._request_builder, account_id=self.account_id)
 
     def __repr__(self) -> str:
         return f"<User online_id:{self.online_id} account_id:{self.account_id}>"
