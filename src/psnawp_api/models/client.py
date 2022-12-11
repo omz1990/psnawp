@@ -369,8 +369,18 @@ class Client:
                 np_communication_id=np_communication_id,
             ).user_trophy_groups_summary_with_metadata(account_id="me", platform=platform)
 
-    def title_stats(self) -> Iterator[TitleStats]:
+    def title_stats(self, account_id: Optional[str] = None, limit: Optional[int] = 200) -> Iterator[TitleStats]:
         """Retrieve a list of title with their stats and basic meta-data
+
+        :param account_id: account_id of account requesting data for, will default to current user.
+        :type account_id: Optional[str]
+        :param limit: Limit of titles returned, will default to 200.
+        :type limit: Optional[int]
+
+        .. warning::
+
+            Only returns data for PS4 games and above. Don't put a very high limit as the data returned includes a lot of extra meta data which makes the
+            payload large.
 
         :returns: List of Titles with their play times
         :rtype: Iterator[TitleStats]
@@ -385,7 +395,9 @@ class Client:
             print(client.title_stats())
 
         """
-        return TitleStats.from_endpoint(request_builder=self._request_builder, account_id=self.account_id)
+        return TitleStats.from_endpoint(
+            request_builder=self._request_builder, account_id=account_id if account_id is not None else self.account_id, limit=limit
+        )
 
     def __repr__(self) -> str:
         return f"<User online_id:{self.online_id} account_id:{self.account_id}>"

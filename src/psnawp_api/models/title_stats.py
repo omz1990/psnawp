@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Optional, Iterator, Any
 from attrs import define
 
-from psnawp_api.core.psnawp_exceptions import PSNAWPNotFound, PSNAWPForbidden
+from psnawp_api.core.psnawp_exceptions import PSNAWPForbidden
 from psnawp_api.utils.endpoints import BASE_PATH, API_PATH
 from psnawp_api.utils.request_builder import RequestBuilder
 
@@ -56,7 +56,7 @@ class TitleStats:
         return title_instance
 
     @classmethod
-    def from_endpoint(cls, request_builder: RequestBuilder, account_id: str, limit: Optional[int] = 400) -> Iterator[TitleStats]:
+    def from_endpoint(cls, request_builder: RequestBuilder, account_id: str, limit: Optional[int] = 200) -> Iterator[TitleStats]:
 
         offset = 0
         params: dict[str, Any] = {"categories": "ps4_game,ps5_native_game", "limit": limit, "offset": offset}
@@ -68,8 +68,6 @@ class TitleStats:
                     url=f"{BASE_PATH['games_list']}{API_PATH['user_game_data'].format(account_id=account_id)}",
                     params=params,
                 ).json()
-            except PSNAWPNotFound as not_found:
-                raise PSNAWPNotFound("The following user has no game data.") from not_found
             except PSNAWPForbidden as forbidden:
                 raise PSNAWPForbidden("The following user has made profile private.") from forbidden
 
@@ -81,7 +79,8 @@ class TitleStats:
                 yield title_instance
                 per_page_items += 1
 
-            offset = response.get("nextOffset", 0)
-            # If nextOffset from response is null, we've reached the end
-            if offset is None:
+            next_offset = response.get("nextOffset", None)
+            offset = next_offset if next_offset is not None else 0
+            # If there is not more offset, we've reached the end
+            if offset <= 0:
                 break
