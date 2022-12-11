@@ -378,6 +378,7 @@ class Client:
             .. literalinclude:: examples/client/get_title_stats.json
                 :language: json
 
+
         .. code-block:: Python
 
             client = psnawp.me()
