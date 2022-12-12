@@ -365,9 +365,7 @@ class User:
             print(client.title_stats())
 
         """
-        return TitleStats.from_endpoint(
-            request_builder=self._request_builder, account_id=self.account_id, limit=limit
-        )
+        return TitleStats.from_endpoint(request_builder=self._request_builder, account_id=self.account_id, limit=limit)
 
     def __repr__(self) -> str:
         return f"<User online_id:{self.online_id} account_id:{self.account_id}>"
