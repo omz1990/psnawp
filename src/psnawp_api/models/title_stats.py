@@ -10,14 +10,14 @@ from psnawp_api.utils.endpoints import BASE_PATH, API_PATH
 from psnawp_api.utils.request_builder import RequestBuilder
 
 
-class PlatformType(Enum):
+class PlatformCategory(Enum):
     UNKNOWN = "unknown"
     PS4 = "ps4_game"
     PS5 = "ps5_native_game"
 
 
-def platform_str_to_enum(platform_type_str: Optional[str]) -> PlatformType:
-    return PlatformType(platform_type_str) if platform_type_str is not None else PlatformType.UNKNOWN
+def platform_str_to_enum(platform_type_str: Optional[str]) -> PlatformCategory:
+    return PlatformCategory(platform_type_str) if platform_type_str is not None else PlatformCategory.UNKNOWN
 
 
 @define(frozen=True)
@@ -30,8 +30,8 @@ class TitleStats:
     name: Optional[str]
     "Image URL"
     image_url: Optional[str]
-    "Platform Type"
-    platform: Optional[PlatformType]
+    "Category/Platform Type"
+    category: Optional[PlatformCategory]
     "Number of times the game has been played"
     play_count: Optional[int]
     "First time the game was played"
@@ -47,7 +47,7 @@ class TitleStats:
             title_id=game_stats_dict.get("titleId"),
             name=game_stats_dict.get("name"),
             image_url=game_stats_dict.get("imageUrl"),
-            platform=platform_str_to_enum(game_stats_dict.get("category")),
+            category=platform_str_to_enum(game_stats_dict.get("category")),
             play_count=game_stats_dict.get("playCount"),
             first_played_date_time=game_stats_dict.get("firstPlayedDateTime"),
             last_played_date_time=game_stats_dict.get("lastPlayedDateTime"),
