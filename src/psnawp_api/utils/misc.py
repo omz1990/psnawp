@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import logging
+from datetime import datetime
+from typing import Optional
 
 from psnawp_api import psnawp
 
@@ -26,3 +28,7 @@ def create_logger(module_name: str) -> logging.Logger:
     logger.addHandler(log_stream)
     logger.propagate = False
     return logger
+
+
+def iso_format_to_datetime(iso_format: Optional[str]) -> Optional[datetime]:
+    return datetime.fromisoformat(iso_format.replace("Z", "+00:00")) if iso_format is not None else None

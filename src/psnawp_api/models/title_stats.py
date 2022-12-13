@@ -7,6 +7,7 @@ from attrs import define
 
 from psnawp_api.core.psnawp_exceptions import PSNAWPForbidden
 from psnawp_api.utils.endpoints import BASE_PATH, API_PATH
+from psnawp_api.utils.misc import iso_format_to_datetime
 from psnawp_api.utils.request_builder import RequestBuilder
 
 
@@ -49,8 +50,8 @@ class TitleStats:
             image_url=game_stats_dict.get("imageUrl"),
             category=platform_str_to_enum(game_stats_dict.get("category")),
             play_count=game_stats_dict.get("playCount"),
-            first_played_date_time=game_stats_dict.get("firstPlayedDateTime"),
-            last_played_date_time=game_stats_dict.get("lastPlayedDateTime"),
+            first_played_date_time=iso_format_to_datetime(game_stats_dict.get("firstPlayedDateTime")),
+            last_played_date_time=iso_format_to_datetime(game_stats_dict.get("lastPlayedDateTime")),
             play_duration=game_stats_dict.get("playDuration"),
         )
         return title_instance
