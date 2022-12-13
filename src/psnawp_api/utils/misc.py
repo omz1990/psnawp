@@ -46,11 +46,7 @@ def play_duration_to_timedelta(play_duration: Optional[str]) -> timedelta:
 
     .. note::
 
-            PSN API returns the duration in this format: PT243H18M48S.
-            The maximum time Unit is Hours, it does not extend to Days or Months.
-            PT243H18M48S = 243 hours, 18 minutes, 48 seconds
-            PT21M18S = 21 minutes, 18 seconds
-            PT39S = 39 seconds
+        PSN API returns the duration in this format: PT243H18M48S. The maximum time Unit is Hours, it does not extend to Days or Months.
 
     """
     hours = 0
@@ -59,19 +55,19 @@ def play_duration_to_timedelta(play_duration: Optional[str]) -> timedelta:
 
     if play_duration is not None:
         # Strip everything and split into list of numbers separated by alphabets
-        digits_list = [int(s) for s in re.findall(r'\d+', play_duration)]
+        digits_list = [int(s) for s in re.findall(r"\d+", play_duration)]
         length = len(digits_list)
 
-        # Example: PT243H18M48S
+        # Example: PT243H18M48S = 243 hours, 18 minutes, 48 seconds
         if length == 3:
             hours = digits_list[0]
             minutes = digits_list[1]
             seconds = digits_list[2]
-        # Example: PT21M18S
+        # Example: PT21M18S = 21 minutes, 18 seconds
         elif length == 2:
             minutes = digits_list[0]
             seconds = digits_list[1]
-        # Example: PT39S
+        # Example: PT39S = 39 seconds
         elif length == 1:
             seconds = digits_list[0]
 
